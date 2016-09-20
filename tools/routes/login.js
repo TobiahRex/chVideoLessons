@@ -1,8 +1,8 @@
 const express = require('express');
-const router = express.router();
+const router = express.Router();
 const request = require('request');
-const config = require('../../config/environment');
-const auth = require('../../auth/auth.service');
+const JWT_SECRET = process.env.CHTEST_SECRET;
+const JWT = require('jsonwebtoken');
 
 router.route('/')
 .post((req, res) => {
@@ -13,7 +13,22 @@ router.route('/')
   };
   request.post(options, (err, data, body) => {
     console.log('body: ', JSON.parse(body));
-    return res.status(err ? 401 : 200).send(err || body);
+
+    let tokenHeader = req.headers.authorization;
+    console.log('tokenHeader: ', tokenHeader);
+    if (!tokenHeader) return res.status(400).send({ Error: 'User not found' });
+
+    let token = tokenHeader.split(' ')[1];
+    console.log('token: ', token);
+    JWT.verify(token, JWT_SECRET, (err, payload) => {
+      if (err) return res.status(401).send({ Error: 'HACKER! You are not authorized.' });
+      console.log('payload: ', payload);
+      req.user = {
+        _id: payload._id,
+        role: payload.role
+      };
+      res.status(err ? 400 : 200).send(err || { user: req.user });
+    });
   });
 });
 
