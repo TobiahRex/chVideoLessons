@@ -1,12 +1,9 @@
-"use strict";
-
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const path = require("path");
-const pathToIndex = path.join(__dirname, "../../src/index.html");
+const path = require('path');
+const pathToIndex = path.join(__dirname, '../../src/index.html');
 
-router.get("/", function (request, response) {
+router.get('/', (request, response) => {
    response.sendFile(pathToIndex);
 });
-
 module.exports = router;
