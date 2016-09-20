@@ -30,7 +30,7 @@
     "json-web-token": "^2.0.2",
     "jsonwebtoken": "^7.1.9",
     "moment": "^2.13.0",
-    "mongoose": "^4.5.3",
+    "mongoose": "^4.6.0",
     "morgan": "^1.7.0",
     "multer": "^1.1.0",
     "react": "15.3.2",

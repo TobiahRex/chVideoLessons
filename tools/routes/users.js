@@ -3,6 +3,7 @@ const router = express.Router();
 const async = require('async');
 const User = require('../models/user');
 const request = require('request');
+const auth = require('../auth/auth.middlewares');
 
 // router.route('/')
 // .get((req, res) => User.obtainUsers(res.handle))
@@ -22,17 +23,19 @@ const request = require('request');
 
 router.route('/')
 .get((req, res) => {
-  console.log('req.headers: ', req.headers);
   request.get('http://test.codinghouse.co/api/users/me', (err, body, data) => {
-
     console.log('err: ', err, '\nbody: ', body, '\ndata: ', data);
     return res.status(err ? 400 : 200).send(err || body);
   }).auth(null, null, true, req.headers.token);
 });
 
 router.route('/:id')
-.get((req, res) => {
-  
+.get(auth.isAuthenticated(), (req, res, next) => {
+  request.get(`http://test.codinghouse.co/api/users/${req.params.id}`, (err, data, body) => {
+    console.log('err: ', err, '\nbody: ', body, '\ndata: ', data);
+    console.log('json.body: ', JSON.parse());
+    return res.status(err ? 400 : 200).send(err || body);
+  }).auth(null, null, true, req.headers.token);
 });
 
 module.exports = router;
