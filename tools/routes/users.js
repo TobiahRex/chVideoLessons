@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const async = require('async');
 const User = require('../models/user');
+const request = require('request');
 
 // router.route('/')
 // .get((req, res) => User.obtainUsers(res.handle))
@@ -19,6 +20,19 @@ const User = require('../models/user');
 //   });
 // });
 
-router.route('/', )
+router.route('/')
+.get((req, res) => {
+  console.log('req.headers: ', req.headers);
+  request.get('http://test.codinghouse.co/api/users/me', (err, body, data) => {
+
+    console.log('err: ', err, '\nbody: ', body, '\ndata: ', data);
+    return res.status(err ? 400 : 200).send(err || body);
+  }).auth(null, null, true, req.headers.token);
+});
+
+router.route('/:id')
+.get((req, res) => {
+  
+});
 
 module.exports = router;

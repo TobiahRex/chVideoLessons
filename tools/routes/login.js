@@ -16,6 +16,7 @@ router.route('/')
     JWT.verify(body.token, JWT_SECRET, (err, payload) => {
       if (err) return res.status(401).send({ Error: 'HACKER! You are not authorized.' });
       req.user = payload;
+      req.user.token = body.token;
       res.status(err ? 400 : 200).send(err || { user: req.user });
     });
   });
