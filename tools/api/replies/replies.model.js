@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
+const Comment = require('../comments/commend.model');
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
-let commentSchema = new mongoose.Schema({
+let replySchema = new mongoose.Schema({
   user: {
     type: ObjectId,
     ref: 'User'
@@ -18,9 +19,13 @@ let commentSchema = new mongoose.Schema({
   downvotes: [{
     type: ObjectId,
     ref: 'User'
-  }],
-  replies: [{
-    type: ObjectId,
-    ref: 'Reply'
   }]
 });
+
+replySchema.addReply = (commentId, reply, cb) => {
+  if (!commentId) return cb({ Error: 'Did not provide Comment ID for Reply.' });
+  
+};
+
+const Reply = mongoose.model('Reply', replySchema);
+module.exports = Reply;
