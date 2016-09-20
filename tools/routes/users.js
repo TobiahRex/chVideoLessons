@@ -24,18 +24,16 @@ const auth = require('../auth/auth.middlewares');
 router.route('/')
 .get((req, res) => {
   request.get('http://test.codinghouse.co/api/users/me', (err, body, data) => {
-    console.log('err: ', err, '\nbody: ', body, '\ndata: ', data);
     return res.status(err ? 400 : 200).send(err || body);
-  }).auth(null, null, true, req.headers.token);
+  }).auth(null, null, true, req.headers.authorization.split(' ')[1]);
 });
 
 router.route('/:id')
 .get(auth.isAuthenticated(), (req, res, next) => {
+
   request.get(`http://test.codinghouse.co/api/users/${req.params.id}`, (err, data, body) => {
-    console.log('err: ', err, '\nbody: ', body, '\ndata: ', data);
-    console.log('json.body: ', JSON.parse());
-    return res.status(err ? 400 : 200).send(err || body);
-  }).auth(null, null, true, req.headers.token);
+    return res.status(err ? 400 : 200).send(err || JSON.parse(body));
+  }).auth(null, null, true, req.headers.authorization.split(' ')[1]);
 });
 
 module.exports = router;

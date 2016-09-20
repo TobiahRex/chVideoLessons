@@ -1,8 +1,8 @@
 const JWT = require('jsonwebtoken');
-const expressJwt = require('express-jwt');
+const expressJWT = require('express-jwt');
 const compose = require('composable-middleware');
 const config = require('../config/environment');
-
+const validateJWT = expressJWT({ secret: 'codinghouse-secret' });
 const middleWares = {
 
   // creates req.user if authenticated. Else returns '403'
@@ -14,7 +14,7 @@ const middleWares = {
       if(req.query && req.query.hasOwnProperty('access_token')) {
         req.headers.authorization = 'Bearer ' + req.query.access_token;
       }
-      expressJwt({ secret: config.secrets.session || config.secrets.test });
+      validateJWT(req, res, next);
     });
   },
 
