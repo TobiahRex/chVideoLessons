@@ -31,5 +31,5 @@ app.use(require('webpack-hot-middleware')(compiler));
 app.use("/api", require("./routes/api"));
 app.use("*", require("./routes/index"));
 
-app.listen(PORT, (err) => console.log(err || `Listening on port ${PORT}`));
+app.listen(PORT, (err) => console.info(err || `Listening on port ${PORT}`));
 mongoose.connect(MONGOURL, (error) => console.info(error || `Connected to MongoDB at ${MONGOURL}`));
