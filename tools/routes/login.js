@@ -12,15 +12,12 @@ router.route('/')
     json: true
   };
   request.post(options, (err, data, body) => {
-    console.log('body: ', JSON.parse(body));
-
-    let tokenHeader = req.headers.authorization;
-    console.log('tokenHeader: ', tokenHeader);
-    if (!tokenHeader) return res.status(400).send({ Error: 'User not found' });
-
-    let token = tokenHeader.split(' ')[1];
-    console.log('token: ', token);
-    JWT.verify(token, JWT_SECRET, (err, payload) => {
+    console.log('body: ', body);
+    if (!body.token) return res.status(400).send({ Error: 'User not found' });
+    // let token = body.token.split('.')[1];
+    // console.log('token: ', token);
+    JWT.verify(body.token, JWT_SECRET, (err, payload) => {
+      console.log('err: ', err);
       if (err) return res.status(401).send({ Error: 'HACKER! You are not authorized.' });
       console.log('payload: ', payload);
       req.user = {
