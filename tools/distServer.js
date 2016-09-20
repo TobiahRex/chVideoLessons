@@ -8,6 +8,7 @@ import mongoose from 'mongoose';
 const app = express();
 const PORT = process.env.PORT || 4000;
 const MONGOURL = process.env.MONGODB_URI || 'mongodb://localhost/example';
+if (!process.env.PORT || !process.env.MONGOURL) require('dotenv').load();
 
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());

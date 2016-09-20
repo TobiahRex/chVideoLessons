@@ -5,14 +5,13 @@ import morgan from "morgan";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
-import path from "path";
+if (!process.env.PORT || !process.env.MONGOURL) require('dotenv').load();
 
 const PORT = process.env.PORT || 3000;
 const app = express();
 const MONGOURL = process.env.MONGODB_URI || "mongodb://localhost/chVideoLessons";
 const compiler = webpack(config);
-// const pathToStatic = path.join(__dirname);
-/* eslint-disable no-console */
+
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
 app.use(cookieParser());
