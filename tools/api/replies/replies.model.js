@@ -59,7 +59,5 @@ replySchema.downVote = (userId, replyId, cb) => {
     });
   });
 };
-
-
 const Reply = mongoose.model('Reply', replySchema);
 module.exports = Reply;
