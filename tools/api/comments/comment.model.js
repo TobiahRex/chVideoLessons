@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const User = require('../users/user.model');
-const Lesson = require('../lessons/lessons.model');
+const Chapter = require('../chapters/chapter');
 
 let commentSchema = new mongoose.Schema({
   user: {
@@ -26,15 +26,14 @@ let commentSchema = new mongoose.Schema({
     ref: 'Reply'
   }]
 });
-commentSchema.addComment = (idsObj, chapterId, comment, cb) => {
-  if (!idsObj.lesson || !idsObj.section || !idsObj.chapter || !comment) return cb({ Error: 'Missing required info to add Comment.' });
-  Comment.create(reply, (err1, dbComment) => {
-    Comment.findById(commentId, (err2, dbComment) => {
-      if (err1) return cb({ Error: `Error making Reply: ${err1}` });
-      if (err2) return cb({ Error: `Could not find Comment with ID: ${commentId}` });
-
-      dbComment.replies.push(dbComment._id);
-      dbComment.save((err3, savedComment) => cb(err3 || null, savedComment));
+commentSchema.addComment = (chapterId, comment, cb) => {
+  if (!chapterId || !comment) return cb({ Error: 'Missing required info to add Comment.' });
+  Chapter.findById(chapterId, (err1, dbChapter) => {
+    if (err1) return cb({ Error: `Error finding Lesson: ${err1}` });
+    Comment.create(comment, (err2, dbComment) => {
+      if (err2) return cb({ Error: `Could not create comment - ${err2}` });
+      dbChapter.comments.push(dbComment._id);
+      dbChapter.save((err3, savedChapter) => cb(err3 || null, savedChapter));
     });
   });
 };
