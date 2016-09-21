@@ -37,29 +37,29 @@ commentSchema.addComment = (chapterId, comment, cb) => {
     });
   });
 };
-commentSchema.upVote = (userId, replyId, cb) => {
-  if (!userId || !replyId) return cb({ Error: 'Did not provide User Id for Upvote' });
+commentSchema.upVote = (userId, commentId, cb) => {
+  if (!userId || !commentId) return cb({ Error: 'Did not provide User Id for Upvote' });
   User.findById(userId, (err1, dbUser) => {
-    Reply.findById(replyId, (err2, dbComment) => {
-      if (err1) return cb({ Error: `Could not find that user: ${userId}` });
-      if (err2) return cb({ Error: `Could not find that reply: ${replyId}` });
+    Comment.findById(commentId, (err2, dbComment) => {
+      if (err1) return cb({ Error: `Could not find that User: ${userId}` });
+      if (err2) return cb({ Error: `Could not find that Comment: ${commentId}` });
 
       dbComment.upvotes.push(dbUser._id);
-      dbComment.save((err3, savedReply) => cb(err3 || null, savedReply));
+      dbComment.save((err3, savedComment) => cb(err3 || null, savedComment));
     });
   });
 };
-commentSchema.downVote = (userId, replyId, cb) => {
-  if (!userId || !replyId) return cb({ Error: 'Did not provide User Id for Downvote' });
+commentSchema.downVote = (userId, commentId, cb) => {
+  if (!userId || !commentId) return cb({ Error: 'Did not provide User Id for Downvote' });
   User.findById(userId, (err1, dbUser) => {
-    Reply.findById(replyId, (err2, dbComment) => {
+    Comment.findById(commentId, (err2, dbComment) => {
       if (err1) return cb({ Error: `Could not find that user: ${userId}` });
-      if (err2) return cb({ Error: `Could not find that reply: ${replyId}` });
+      if (err2) return cb({ Error: `Could not find that reply: ${commentId}` });
 
       dbComment.downvotes.push(dbUser._id);
-      dbComment.save((err3, savedReply) => cb(err3 || null, savedReply));
+      dbComment.save((err3, savedComment) => cb(err3 || null, savedComment));
     });
   });
 };
-const Comment = mongoose.model('Reply', commentSchema);
+const Comment = mongoose.model('Comment', commentSchema);
 module.exports = Comment;
