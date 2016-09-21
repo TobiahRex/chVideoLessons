@@ -26,17 +26,6 @@ let commentSchema = new mongoose.Schema({
     ref: 'Reply'
   }]
 });
-commentSchema.addComment = (chapterId, comment, cb) => {
-  if (!chapterId || !comment) return cb({ Error: 'Missing required info to add Comment.' });
-  Chapter.findById(chapterId, (err1, dbChapter) => {
-    if (err1) return cb({ Error: `Error finding Lesson: ${err1}` });
-    Comment.create(comment, (err2, dbComment) => {
-      if (err2) return cb({ Error: `Could not create comment - ${err2}` });
-      dbChapter.comments.push(dbComment._id);
-      dbChapter.save((err3, savedChapter) => cb(err3 || null, savedChapter));
-    });
-  });
-};
 commentSchema.upVote = (userId, commentId, cb) => {
   if (!userId || !commentId) return cb({ Error: 'Did not provide User Id for Upvote' });
   User.findById(userId, (err1, dbUser) => {
@@ -62,4 +51,4 @@ commentSchema.downVote = (userId, commentId, cb) => {
   });
 };
 const Comment = mongoose.model('Comment', commentSchema);
-module.exports = Comment;
+export default Comment;

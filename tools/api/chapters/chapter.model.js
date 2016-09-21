@@ -21,6 +21,12 @@ chapterSchema.postComment = (chapterId, comment, cb) => {
     });
   });
 };
-
+chapterSchema.removeComment = (chapterId, comment, cb) => {
+  if (!chapterId) return cb({ Error: 'Missing required id to remove Comment.' });
+  Chapter.findByIdAndRemove(chapterId, (err, removedChapter) => {
+    if (err) return cb({ Error: `Could not find chapter with id - ${chapterId}` });
+    return cb(null, { Success: removedChapter });
+  });
+};
 const Chapter = mongoose.model('Chapter', chapterSchema);
 export default Chapter;
