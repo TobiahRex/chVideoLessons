@@ -1,4 +1,5 @@
 import express from 'express';
+import CohortLesson from './cohortLesson.model';
 const router = express.Router();
 
 router.route('/:id')

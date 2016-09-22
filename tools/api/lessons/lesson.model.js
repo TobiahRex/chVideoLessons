@@ -13,7 +13,19 @@ const lessonSchema = new mongoose.Schema({
     default: Date.now
   }
 });
-
+/*
+1) find a cohort lesson that should already exist.
+2) create a new lesson
+3) pass the new lesson._id into the cohort Lesson and save.
+4) for each section in the lesson, create a seciton
+& create a chapter.
+5) insert the chapter ids into the section.
+6) save the section.
+7) insert the section id into the lesson.
+8) save the lesson.
+9) insert the lesson id into the cohortLesson.
+10) save the cohortLesson.
+*/
 lessonSchema.createNewLesson = (lessonObj, cb) => {
   if (!lessonObj) return cb({ Error: 'Did not provide lesson Obj.' });
 
@@ -55,25 +67,5 @@ lessonSchema.createNewLesson = (lessonObj, cb) => {
     });
   });
 };
-
-/*
-create a new cohortLesson.
-
-create a new lesson
-save the id.
-
-for each section in the lesson, create a seciton
-& create a chapter.
-save the section id
-save the chapter id.
-
-insert the chapter ids into the section.
-insert the section id into the lesson.
-insert the lesson id into the cohortLesson.
-
-save the section.
-save the lesson.
-save the cohortLesson.
-*/
 const Lesson = mongoose.model('Lesson', lessonSchema);
 module.exports = Lesson;
