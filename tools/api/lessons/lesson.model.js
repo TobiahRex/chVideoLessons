@@ -28,22 +28,18 @@ lessonSchema.createNewLesson = (lessonObj, cb) => {
 /*
   create a new cohortLesson.
   
-  create a new lesson.
-  for each section, create a chapter.
-  save the section id and the chapter id.
+  create a new lesson
+  save the id.
+
+  for each section in the lesson, create a chapter.
+  save the section id
+  save the chapter id.
 
   insert the chapter ids into the section.
   insert the section id into the lesson.
+  insert the lesson id into the cohortLesson.
 
   save the section.
   save the lesson.
-
-
-  inside of creating each Section create a Chapter.
-  save the ids for each section and
-  create a Section for each section in the obj.
-  create a Chapter for each chapter in the obj.
-  create a lesson for the entire object.
-
-  insert the Chapter ID's their respsective
+  save the cohortLesson.
 */
