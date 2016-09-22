@@ -1,8 +1,8 @@
-const express = require('express');
+import express from 'express';
+import request from 'request';
+import JWT from 'jsonwebtoken';
+import config from '../../config/environment';
 const router = express.Router();
-const request = require('request');
-const config = require('../../config/environment');
-const JWT = require('jsonwebtoken');
 
 router.route('/')
 .post((req, res) => {
@@ -22,4 +22,4 @@ router.route('/')
   });
 });
 
-module.exports = router;
+export default router;

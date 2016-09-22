@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const Comment = require('../comments/commend.model');
-const User = require('../users/user.model');
+import mongoose from 'mongoose';
+import Comment from '../comments/comment.model';
+import User from '../users/user.model';
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 let replySchema = new mongoose.Schema({

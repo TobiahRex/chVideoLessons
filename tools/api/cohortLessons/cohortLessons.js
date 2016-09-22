@@ -16,4 +16,4 @@ router.route('/:id')
   .populate('Lesson')
   .exec(res.handle));
 
-module.exports = router;
+export default router;

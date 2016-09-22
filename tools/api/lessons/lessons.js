@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const Lesson = require('./lesson.model');
-const CohortLesson = require('../cohortLessons/cohortLesson.model');
+import Lesson from './lesson.model';
+import CohortLesson from '../cohortLessons/cohortLesson.model';
 
 
 router.route('/dev')
@@ -23,4 +23,4 @@ router.route('/cohort-lessons/:id')
 .get((req, res) => CohortLesson.findById(req.params.id, res.handle))
 .put((req, res) => CohortLesson.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true }, res.handle));
 
-module.exports = router;
+export default router;

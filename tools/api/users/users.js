@@ -36,4 +36,4 @@ router.route('/:id')
   }).auth(null, null, true, req.headers.authorization.split(' ')[1]);
 });
 
-module.exports = router;
+export default router;

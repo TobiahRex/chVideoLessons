@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-const JWT = require('json-web-token');
-const moment = require('moment');
-const config = '../../config/environment';
+import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
+import JWT from 'json-web-token';
+import moment from 'moment';
+import config from '../../config/environment';
 
 let userSchema = new mongoose.Schema({
 
@@ -92,4 +92,4 @@ userSchema.statics.authorization = () => {
 };
 
 let User = mongoose.model('User', userSchema);
-module.exports = User;
+export default User;

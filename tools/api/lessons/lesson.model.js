@@ -68,4 +68,4 @@ lessonSchema.createNewLesson = (lessonObj, cb) => {
   });
 };
 const Lesson = mongoose.model('Lesson', lessonSchema);
-module.exports = Lesson;
+export default Lesson;
