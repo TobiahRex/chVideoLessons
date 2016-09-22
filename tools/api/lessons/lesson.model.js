@@ -16,37 +16,64 @@ const lessonSchema = new mongoose.Schema({
 
 lessonSchema.createNewLesson = (lessonObj, cb) => {
   if (!lessonObj) return cb({ Error: 'Did not provide lesson Obj.' });
-  CohortLesson.create(lessonObj.cohortLesson, (err1, dbCL) => {
-    if (err1) return cb({ Error: `Bad Cohort Lesson Obj - ${lessonObj.cohortLesson}` });
+
+  CohortLesson.findById(lessonObj.cohortLessonID, (err, dbCL) => {
+    if (err) return cb({ Error: `Bad Cohort Lesson ID - ${lessonObj.cohortLessonID}` });
+
     Lesson.create(lessonObj.lesson, (err2, dbLesson) => {
-      
-      lessonObj.sections.forEach((sectionObj) => {
-        Section.create(sectionObj, (err3, dbSection) => {
+      if (err2) return cb({ Error: `Bad Lesson Obj - ${err2}` });
 
+      dbCL.push(dbLesson._id);
+      dbCL.save((err3, savedCohortLesson) => {
+        if (err3) return cb({ Error: `Could not save Lesson to Cohort Lesson. ${err3}` });
+
+        lessonObj.sections.forEach((sectionObj) => {
+          Section.create(sectionObj, (err4, dbSection) => {
+            if (err4) return cb({ Error: `Bad Section Obj - ${sectionObj}` });
+
+            dbLesson.sections.push(dbSection._id);
+            dbLesson.save((err5) => {
+              if (err5) return cb({ Error: `Could not save Section to Lesson. ${err5}` });
+
+              sectionObj.chapters.forEach((chapterObj) => {
+                Chapter.create(chapterObj, (err6, dbChapter) => {
+                  if (err6) return cb({ Error: `Bad Chapter Obj - ${chapterObj}` });
+
+                  dbSection.chapters.push(dbChapter._id);
+                  dbSection.save((err7) => {
+                    if (err7) return cb({ Error: `Could not save Chapter to Section. ${err5}`});
+                  });
+                });
+              });
+            });
+          });
         });
-      });
 
+        return cb(null, savedCohortLesson);
+
+      });
     });
   });
 };
 
 /*
-  create a new cohortLesson.
+create a new cohortLesson.
 
-  create a new lesson
-  save the id.
+create a new lesson
+save the id.
 
-  for each section in the lesson, create a chapter.
-  save the section id
-  save the chapter id.
+for each section in the lesson, create a seciton
+& create a chapter.
+save the section id
+save the chapter id.
 
-  insert the chapter ids into the section.
-  insert the section id into the lesson.
-  insert the lesson id into the cohortLesson.
+insert the chapter ids into the section.
+insert the section id into the lesson.
+insert the lesson id into the cohortLesson.
 
-  save the section.
-  save the lesson.
-  save the cohortLesson.
+save the section.
+save the lesson.
+save the cohortLesson.
 */
 const Lesson = mongoose.model('Lesson', lessonSchema);
 module.exports = Lesson;
