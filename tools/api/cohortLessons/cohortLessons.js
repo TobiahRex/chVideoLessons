@@ -5,7 +5,6 @@ const router = express.Router();
 /*
   TODO: Remove this route in Production.
 */
-router.get('/', (req, res) => res.status(200).send('Hi'));
 router.route('/dev')
 .delete((req, res) => CohortLesson.remove({}, res.handle))
 .post((req, res) => CohortLesson.create(req.body, res.handle))
