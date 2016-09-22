@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import Comment from '../comments/comment.model';
-import User from '../users/user.model';
+const Comment = require('../comments/comment.model');
+const User = require('../users/user.model');
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 let replySchema = new mongoose.Schema({
@@ -60,4 +60,4 @@ replySchema.downVote = (userId, replyId, cb) => {
   });
 };
 const Reply = mongoose.model('Reply', replySchema);
-module.exports = Reply;
+export default Reply;

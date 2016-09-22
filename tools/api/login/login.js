@@ -1,7 +1,7 @@
 import express from 'express';
 import request from 'request';
 import JWT from 'jsonwebtoken';
-import config from '../../config/environment';
+const config = require('../../config/environment');
 const router = express.Router();
 
 router.route('/')
@@ -22,4 +22,4 @@ router.route('/')
   });
 });
 
-export default router;
+module.exports = router;

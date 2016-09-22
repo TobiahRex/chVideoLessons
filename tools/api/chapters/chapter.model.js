@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import Comment from '../comments/comment.model';
+const Comment = require('../comments/comment.model');
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const chapterSchema = new mongoose.Schema({
@@ -22,4 +22,4 @@ chapterSchema.postComment = (chapterId, comment, cb) => {
   });
 };
 const Chapter = mongoose.model('Chapter', chapterSchema);
-export default Chapter;
+module.exports = Chapter;

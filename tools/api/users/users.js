@@ -1,8 +1,7 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const async = require('async');
+import request from 'request';
 const User = require('./user.model');
-const request = require('request');
 const auth = require('../../auth/auth.middlewares');
 
 // router.route('/')
@@ -36,4 +35,4 @@ router.route('/:id')
   }).auth(null, null, true, req.headers.authorization.split(' ')[1]);
 });
 
-export default router;
+module.exports = router;

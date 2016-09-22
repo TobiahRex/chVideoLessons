@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import JWT from 'json-web-token';
 import moment from 'moment';
-import config from '../../config/environment';
+const config = require('../../config/environment');
 
 let userSchema = new mongoose.Schema({
 

@@ -1,14 +1,14 @@
 import express from 'express';
 const router = express.Router();
-import Lesson from './lesson.model';
-import CohortLesson from '../cohortLessons/cohortLesson.model';
-
+const Lesson = require('./lesson.model');
+const CohortLesson = require('../cohortLessons/cohortLesson.model');
 
 router.route('/dev')
 /*
 TODO: Delete this remove all route before production!
 */
-.delete((req, res) => Lesson.remove({}, res.handle));
+.delete((req, res) => Lesson.remove({}, res.handle))
+.get((req, res) => Lesson.find({}, res.handle));
 
 router.route('/')
 .get((req, res) => Lesson.find({}).populate('Section').exec(res.handle))
@@ -23,4 +23,4 @@ router.route('/cohort-lessons/:id')
 .get((req, res) => CohortLesson.findById(req.params.id, res.handle))
 .put((req, res) => CohortLesson.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true }, res.handle));
 
-export default router;
+module.exports = router;

@@ -1,6 +1,6 @@
 import express from 'express';
-import CohortLesson from './cohortLesson.model';
 const router = express.Router();
+const CohortLesson = require('./cohortLesson.model');
 
 /*
   TODO: Remove this route in Production.
@@ -16,4 +16,4 @@ router.route('/:id')
   .populate('Lesson')
   .exec(res.handle));
 
-export default router;
+module.exports = router;

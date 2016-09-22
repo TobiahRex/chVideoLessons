@@ -6,4 +6,4 @@ router.use('/users', require('./users/users'));
 router.use('/lessons', require('./lessons/lessons'));
 router.use('/cl', require('./cohortLessons/cohortLessons'));
 
-export default router;
+module.exports = router;

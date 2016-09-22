@@ -1,6 +1,6 @@
-const JWT = require('jsonwebtoken');
-const expressJWT = require('express-jwt');
-const compose = require('composable-middleware');
+import JWT from 'jsonwebtoken';
+import expressJWT from 'express-jwt';
+import compose from 'composable-middleware';
 const config = require('../config/environment');
 const validateJWT = expressJWT({ secret: 'codinghouse-secret' });
 const middleWares = {
@@ -62,5 +62,4 @@ const middleWares = {
     res.redirect('/');
   }
 };
-
 module.exports = middleWares;
