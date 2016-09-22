@@ -11,7 +11,7 @@ TODO: Delete this remove all route before production!
 .delete((req, res) => Lesson.remove({}, res.handle));
 
 router.route('/')
-.get((req, res) => Lesson.find({}, res.handle))
+.get((req, res) => Lesson.find({}).populate('Section').exec(res.handle))
 .post((req, res) => Lesson.createNewLesson(req.body, res.handle));
 
 router.route('/:id')
