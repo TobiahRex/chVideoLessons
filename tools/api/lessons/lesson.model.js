@@ -26,7 +26,6 @@ const lessonSchema = new mongoose.Schema({
 9) insert the lesson id into the cohortLesson.
 10) save the cohortLesson.
 */
-
 lessonSchema.createNewLesson = (lessonObj, cb) => {
   if (!lessonObj) return cb({ Error: 'Did not provide lesson Obj.' });
 
