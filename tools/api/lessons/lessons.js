@@ -12,7 +12,7 @@ TODO: Delete this remove all route before production!
 
 router.route('/')
 .get((req, res) => Lesson.find({}, res.handle))
-.post((req, res) => Lesson.create(req.body, res.handle));
+.post((req, res) => Lesson.createNewLesson(req.body, res.handle));
 
 router.route('/:id')
 .get((req, res) => Lesson.findById(req.params.id, res.handle))
