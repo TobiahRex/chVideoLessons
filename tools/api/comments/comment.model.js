@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const User = require('../users/user.model');
-const Chapter = require('../chapters/chapter');
 
 let commentSchema = new mongoose.Schema({
   user: {

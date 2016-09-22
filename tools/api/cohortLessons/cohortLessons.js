@@ -5,7 +5,11 @@ const router = express.Router();
 /*
   TODO: Remove this route in Production.
 */
-router.delte('/dev', (req, res) => CohortLesson.remove({}, res.handle));
+router.get('/', (req, res) => res.status(200).send('Hi'));
+router.route('/dev')
+.delete((req, res) => CohortLesson.remove({}, res.handle))
+.post((req, res) => CohortLesson.create(req.body, res.handle))
+.get((req, res) => CohortLesson.find({}, res.handle));
 
 router.route('/:id')
 .get((req, res) => CohortLesson.findById(req.params.id).populate('Lesson').exec(res.handle))

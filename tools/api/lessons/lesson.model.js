@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const ObjectId = mongoose.Schema.Type.ObjectId;
+const ObjectId = mongoose.Schema.Types.ObjectId;
 import CohortLesson from '../cohortLessons/cohortLesson.model';
 import Chapter from '../chapters/chapter.model';
 import Section from '../sections/section.model';

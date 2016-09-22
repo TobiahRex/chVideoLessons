@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Lesson = require('./lesson.model');
-const CohortLesson = require('./cohortLessons.model');
+const CohortLesson = require('../cohortLessons/cohortLesson.model');
 
 
 router.route('/dev')
