@@ -3,7 +3,7 @@ import path from 'path';
 
 export default {
   debug: true,
-  devtool: 'cheap-module-eval-source-map',
+  devtool: 'eval',
   //set to false means it will display a list of all files it is bundling
   //typically, turn it on for production
   noInfo: false,
@@ -26,23 +26,46 @@ export default {
   },
   //tell webpack's dev server where the code is
   devServer: {
-    contentBase: './src'
+    contentBase: './src',
+    inline: true,
+    historyApiFallback: true,
+    stats: {
+      colors: true
+    }
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
   ],
-  //this section tells webpack what file types it should handle
   module: {
     loaders: [
-      //saying we want it to handle javascript and use babel to transpile
-      {test: /\.js$/, include: path.join(__dirname, 'src'), loaders: ['babel']},
-      {test: /(\.css)$/, loaders: ['style', 'css']},
+      {
+        test: /\.jsx?$/,
+        exclude: /(node_modules|bower_components)/,
+        include: path.join(__dirname, 'src'),
+        loaders: ['babel-loader']
+      },
+      {
+        test: /(\.css)$/,
+        loaders: ['style', 'css']
+      },
       //below is necessary for bootstrap
-      {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file'},
-      {test: /\.(woff|woff2)$/, loader: 'url?prefix=font/&limit=5000'},
-      {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/octet-stream'},
-      {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml'},
+      {
+        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'file'
+      },
+      {
+        test: /\.(woff|woff2)$/,
+        loader: 'url?prefix=font/&limit=5000'
+      },
+      {
+        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'url?limit=10000&mimetype=application/octet-stream'
+      },
+      {
+        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'url?limit=10000&mimetype=image/svg+xml'
+      },
       {
         test: /\.(jpe?g|png|gif|svg)$/i,
         loaders: [

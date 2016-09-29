@@ -1,4 +1,3 @@
-"use strict";
 import "babel-polyfill";
 import React from "react";
 import { render } from "react-dom";
@@ -17,13 +16,13 @@ const store = configureStore();
 //store.dispatch({type: "CHECK_ACTIVE_USER"});
 
 render(
-    <Provider store={store}>
-        <Router
-            history={browserHistory}
-            routes={generateRoutes(store)}
-            render={applyRouterMiddleware(useScroll())}/>
-    </Provider>,
-    document.getElementById("app")
+  <Provider store={store}>
+    <Router
+      history={browserHistory}
+      routes={generateRoutes(store)}
+      render={applyRouterMiddleware(useScroll())}/>
+  </Provider>,
+  document.getElementById("app")
 );
 
 export default store;

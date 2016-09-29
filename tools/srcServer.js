@@ -23,6 +23,7 @@ app.use((req, res, next) => {
 });
 app.use(require('webpack-dev-middleware')(compiler, {
     noInfo: true,
+    hot: true,
     //pass public path defined in public.config
     publicPath: config.output.publicPath
 }));
