@@ -20,6 +20,34 @@
 * AJ Funk: Backend Designer
 * Tobiah Rex: Application Builder
 
+#### Accomplishments:
+* August 29th:
+  * React Boilerplate - SAT
+
+* August 24rd:
+<img src='http://i.imgur.com/QHGEq3Q.png' />
+  * GET api/cl/:id - SAT (get specific cohort's lesson)
+  * PUT api/cl/:id - SAT (update specific cohort's lesson)
+  *
+  * GET api/lessons/:id - SAT
+  * DELETE api/lessons/:id - SAT
+  * PUT api/lessons/:id - SAT
+  * GET api/lessons/ - SAT
+  * POST api/lessons/ - SAT (create New Lesson)
+  <img src='http://i.imgur.com/qIKz2UE.png' />
+    * This route takes an array of chapters,
+    * array of sections,
+    * notes document,
+    * array of video urls,
+    * a cohort id,
+    * assigns all that data to a new lesson,
+    * assigns that lesson to that specific cohort,
+    * adds that lesson independently to the database.  
+
+* August 22nd:
+  * GET api/users/:id - SAT
+  * GET api/users/ - SAT
+  * POST api/login/ - SAT
 
 #### Setup:
 #####1) "npm install"

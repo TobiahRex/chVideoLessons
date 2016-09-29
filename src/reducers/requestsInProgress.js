@@ -1,4 +1,4 @@
-import Types from '../actions/actionTypes';
+import Types from '../actions/Types';
 import Immutable from 'seamless-immutable';
 import { createReducer } from 'reduxsauce';
 
