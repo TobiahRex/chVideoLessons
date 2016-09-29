@@ -4,6 +4,7 @@
 
 [R.identity](http://ramdajs.com/docs/#identity)
  * It essentially is doing nothing. But _redux-persist_ needs it to have some sort of object.
+
 [R.when](http://ramdajs.com/docs/#when)
 * Theres a 2 step process in using this method.
 * 1) create two function.
