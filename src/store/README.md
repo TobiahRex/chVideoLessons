@@ -7,7 +7,7 @@
 
 [R.when](http://ramdajs.com/docs/#when)
 * Theres a 2 step process in using this method.
-* 1) create two functions.
+* 1) create two function.
   * The first will be a conditional and must return TRUE or FALSE.
   * The second will execute with argument 'X' if the conditional is TRUE.
   * Assign R.has(fn1, fn2) to a fn3.
@@ -16,13 +16,16 @@
   * If it's true, then fn2 is called with argument 'X'.
   * Otherwise if F, then fn3 returns 'X'.
 
-  `const fn3 = R.when(fn1, fn2) => {
-    return fn1(x) ? fn2(x) : x;
-  });
+  `module.exports = _curry3(function when(pred, whenTrueFn, x) {
 
-  fn3(x)
-  `
+    return pred(x) ? whenTrueFn(x) : x;
+
+  });`
 
 [R.has](http://ramdajs.com/docs/#has)
 * Returns whether or not an object has an own property with the specified name.
 `s -> { s: x } -> Boolean`
+
+
+[state.asMutable({ deep: true })](https://github.com/rtfeldman/seamless-immutable#asmutable)
+* Returns a mutable copy of the data called on.  For a copy of a nested data structure, then this argument of { deep: true } should be used.

@@ -2,7 +2,7 @@ import React from "react";
 import { Route, IndexRedirect } from "react-router";
 import App from "./components/App";
 import HomePage from "./components/Home/HomePage";
-import * as types from "./actions/actionTypes";
+import * as types from "./actions/Types";
 import toastr from "toastr";
 
 export const generateRoutes = (store) => {

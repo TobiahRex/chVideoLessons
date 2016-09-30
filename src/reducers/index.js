@@ -1,9 +1,12 @@
 import { combineReducers } from 'redux';
 import reqIP from './requestsInProgress';
 
-const rootReducer = combineReducers({
+export default combineReducers({
   reqIP
 });
+
+export const persistentStoreBlacklist = [];
+export const persistentStoreWhiteList = [];
 
 /* OLD TEMPLATE
 import { combineReducers } from "redux";
