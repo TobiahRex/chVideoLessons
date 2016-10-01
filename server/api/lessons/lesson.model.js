@@ -39,6 +39,7 @@ lessonSchema.statics.createNewLesson = (lessonObj, cb) => {
 
       dbCL.lessons.push(dbLesson._id);
       dbCL.save((err3, savedCohortLesson) => {
+        console.log('savedCohortLesson: ', savedCohortLesson);
         if (err3) return cb({ Error: `Could not save Lesson to Cohort Lesson. ${err3}` });
 
         lessonObj.sections.forEach((sectionObj) => {

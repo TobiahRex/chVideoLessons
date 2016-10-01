@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 const ObjectId = mongoose.Schema.Types.ObjectId;
+const Chapter = require('../chapters/chapter.model');
 const User = require('../users/user.model');
 
 let commentSchema = new mongoose.Schema({
@@ -25,6 +26,17 @@ let commentSchema = new mongoose.Schema({
     ref: 'Reply'
   }]
 });
+commentSchema.postComment = (chapterId, comment, cb) => {
+  if (!chapterId || !comment) return cb({ Error: 'Missing required info to add Comment.' });
+  Chapter.findById(chapterId, (err1, dbChapter) => {
+    Comment.create(comment, (err2, dbComment) => {
+      if (err1) return cb({ Error: `Error finding Chapter: ${err1}` });
+      if (err2) return cb({ Error: `Could not create Comment - ${err2}` });
+      dbChapter.comments.push(dbComment._id);
+      dbChapter.save((err3, savedChapter) => cb(err3 || null, savedChapter));
+    });
+  });
+};
 commentSchema.upVote = (userId, commentId, cb) => {
   if (!userId || !commentId) return cb({ Error: 'Did not provide User Id for Upvote' });
   User.findById(userId, (err1, dbUser) => {
