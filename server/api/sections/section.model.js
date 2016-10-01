@@ -18,6 +18,14 @@ sectionSchema.statics.deepRemove = (id, cb) => {
     // dbSection.chapters[]
     // dbSection.chapters[0].comments
     if (err) cb({ Error: `Could not find Section - ${id}` });
+    let chapterIDs = [...dbSection.chapters], commentIDs, replyIDs;
+    dbSection.chapters.forEach((chapter) => {
+      commentIDs = [...chapter.comments];
+      chapter.comments.forEach((comment) => {
+        replyIDs = [...comment.replies];
+      });
+    });
+    
     return cb(null, dbSection);
   });
 };
