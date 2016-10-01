@@ -15,17 +15,17 @@ sectionSchema.statics.deepRemove = (id, cb) => {
   Section.findById(id)
   .deepPopulate('chapters chapters.comments chapters.comments.replies')
   .exec((err, dbSection) => {
-    // dbSection.chapters[]
-    // dbSection.chapters[0].comments
     if (err) cb({ Error: `Could not find Section - ${id}` });
+
     let chapterIDs = [...dbSection.chapters], commentIDs, replyIDs;
     dbSection.chapters.forEach((chapter) => {
       commentIDs = [...chapter.comments];
-      chapter.comments.forEach((comment) => {
-        replyIDs = [...comment.replies];
-      });
+      chapter.comments.forEach((comment) => replyIDs = [...comment.replies]);
     });
+
+    chapterIDs.forEach((chapter) => Chapter.findByIdAndRemove(chapter._id, (err) => err ? cb(err) : null));
     
+
     return cb(null, dbSection);
   });
 };
