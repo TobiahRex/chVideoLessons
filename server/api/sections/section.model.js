@@ -24,7 +24,8 @@ sectionSchema.statics.deepRemove = (id, cb) => {
     });
 
     chapterIDs.forEach((chapter) => Chapter.findByIdAndRemove(chapter._id, (err) => err ? cb(err) : null));
-    
+    commentIDs.forEach((comment) => Comment.findByIdAndRemove(comment._id, (err) => err ? cb(err) : null));
+    replyIDs.forEach((reply) => Replies.findByIdAndRemove(reply._id, (err) => err ? cb(err) : null));
 
     return cb(null, dbSection);
   });
