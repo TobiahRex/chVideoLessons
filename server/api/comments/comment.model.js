@@ -40,23 +40,21 @@ commentSchema.statics.postComment = (chapterId, comment, cb) => {
 };
 
 commentSchema.statics.upVote = (commentId, userId, cb) => {
-  if (!userId || !commentId) return cb({ Error: 'Did not provide User Id for Upvote' });
-  Comment.findById(commentId, (err2, dbComment) => {
-    if (err2) return cb({ Error: `Could not find that Comment: ${commentId}` });
+  if (!userId || !commentId) return cb({ Error: 'Missing ID(s) @ upVote' });
 
-    dbComment.upvotes.push(userId._id);
-    dbComment.save((err3, savedComment) => cb(err3 || null, savedComment));
-  });
+  Comment.findById(commentId).exec()
+  .then((dbComment) => dbComment.upvotes.push(userId._id).save())
+  .then((savedComment) => cb(null, savedComment))
+  .catch((err) => cb(err));
 };
 
 commentSchema.statics.downVote = (commentId, userId, cb) => {
-  if (!userId || !commentId) return cb({ Error: 'Did not provide User Id for Downvote' });
-  Comment.findById(commentId, (err2, dbComment) => {
-    if (err2) return cb({ Error: `Could not find that reply: ${commentId}` });
-
-    dbComment.downvotes.push(userId._id);
-    dbComment.save((err3, savedComment) => cb(err3 || null, savedComment));
-  });
+  if (!userId || !commentId) return cb({ Error: 'Missing ID(s) @ downVote' });
+  Comment.findById(commentId).exec()
+  .then((dbComment) => dbComment.downvotes.push(userId._id).save())
+  .then((savedComment) => cb(null, savedComment))
+  .catch((err) => cb(err));
 };
+
 const Comment = mongoose.model('Comment', commentSchema);
 export default Comment;
