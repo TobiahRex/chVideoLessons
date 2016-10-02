@@ -5,7 +5,7 @@ import Chapter from '../chapters/chapter.model';
 import Section from '../sections/section.model';
 import Comment from '../comments/comment.model';
 import Replies from '../replies/replies.model';
-import deepPopulate from 'mongoose-deep-populate';
+const deepPopulate = require('mongoose-deep-populate')(mongoose);
 
 const lessonSchema = new mongoose.Schema({
   title: { type: String },
