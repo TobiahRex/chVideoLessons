@@ -36,5 +36,13 @@ sectionSchema.statics.deepRemove = (id, cb) => {
     return cb(null, dbSection);
   });
 };
+sectionSchema.statics.addChapters = (sectionId, chapterIDs, cb) => {
+  if (!sectionId) return cb({ Error: 'Did not provide seciton Id' });
+
+  Section.findById(sectionId).exec()
+  .then((dbSection) => dbSection.chapters.push(chapterIDs).save())
+  .then((savedSection) => cb(null, savedSection))
+  .catch((err) => cb(err));
+};
 const Section = mongoose.model('Section', sectionSchema);
 export default Section;

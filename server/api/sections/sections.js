@@ -2,7 +2,10 @@ import express from 'express';
 const router = express.Router();
 import Section from './section.model';
 
-router.post('/', (req, res) => Section.create(req.body, res.handle));
+router.route('/')
+.get((req, res) => Section.find({}, res.handle))
+.post((req, res) => Section.create(req.body, res.handle))
+.delete((req, res) => Section.remove({}, res.handle));
 
 router.route('/:id')
 .get((req, res) => Section.findById(req.params.id, res.handle))
