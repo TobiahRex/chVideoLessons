@@ -26,19 +26,20 @@ let commentSchema = new mongoose.Schema({
     ref: 'Reply'
   }]
 });
-commentSchema.postComment = (chapterId, comment, cb) => {
-  if (!chapterId || !comment) return cb({ Error: 'Missing required info to add Comment.' });
-  Chapter.findById(chapterId, (err1, dbChapter) => {
-    Comment.create(comment, (err2, dbComment) => {
-      if (err1) return cb({ Error: `Error finding Chapter: ${err1}` });
-      if (err2) return cb({ Error: `Could not create Comment - ${err2}` });
-      dbChapter.comments.push(dbComment._id);
-      dbChapter.save((err3, savedChapter) => cb(err3 || null, savedChapter));
-    });
-  });
+commentSchema.statics.postComment = (chapterId, comment, cb) => {
+  if (!chapterId || !comment) return cb({ Error: 'Missing chapterID.' });
+  let dbChapter1 = {};
+  Chapter.findById(chapterId).exec()
+  .then((dbChapter) => {
+    dbChapter1 = dbChapter;
+    Comment.create(comment);
+  })
+  .then((dbComment) => dbChapter1.comments.push(dbComment._id).save())
+  .then((savedChapter) => cb(null, savedChapter))
+  .catch((err) => cb(err));
 };
 
-commentSchema.upVote = (commentId, userId, cb) => {
+commentSchema.statics.upVote = (commentId, userId, cb) => {
   if (!userId || !commentId) return cb({ Error: 'Did not provide User Id for Upvote' });
   Comment.findById(commentId, (err2, dbComment) => {
     if (err2) return cb({ Error: `Could not find that Comment: ${commentId}` });
@@ -48,7 +49,7 @@ commentSchema.upVote = (commentId, userId, cb) => {
   });
 };
 
-commentSchema.downVote = (commentId, userId, cb) => {
+commentSchema.statics.downVote = (commentId, userId, cb) => {
   if (!userId || !commentId) return cb({ Error: 'Did not provide User Id for Downvote' });
   Comment.findById(commentId, (err2, dbComment) => {
     if (err2) return cb({ Error: `Could not find that reply: ${commentId}` });

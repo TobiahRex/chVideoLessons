@@ -23,10 +23,11 @@ let replySchema = new mongoose.Schema({
   }]
 });
 
-replySchema.addReply = (commentId, replyObj, cb) => {
+replySchema.statics.addReply = (commentId, replyObj, cb) => {
   if (!commentId) return cb({ Error: 'Missing ID(s).' });
   let dbComment1 = {};
-  Comment.findById(commentId).exec().then((dbComment2) => {
+  Comment.findById(commentId).exec()
+  .then((dbComment2) => {
     dbComment1 = dbComment2;
     Reply.create(replyObj);
   })
@@ -35,7 +36,7 @@ replySchema.addReply = (commentId, replyObj, cb) => {
   .catch((err) => cb(err));
 };
 
-replySchema.upVote = (replyId, userId, cb) => {
+replySchema.statics.upVote = (replyId, userId, cb) => {
   if (!userId || !replyId) return cb({ Error: 'Missing ID(s).' });
 
   Reply.findById(replyId).exec()
@@ -44,7 +45,7 @@ replySchema.upVote = (replyId, userId, cb) => {
   .catch((err) => cb(err));
 };
 
-replySchema.downVote = (replyId, userId, cb) => {
+replySchema.statics.downVote = (replyId, userId, cb) => {
   if (!userId || !replyId) return cb({ Error: 'Missing ID(s)' });
 
   Reply.findById(replyId).exec()
