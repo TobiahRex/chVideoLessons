@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 const ObjectId = mongoose.Schema.Types.ObjectId;
-const Chapter = require('../chapters/chapter.model');
-const User = require('../users/user.model');
+import Chapter from '../chapters/chapter.model';
 
 let commentSchema = new mongoose.Schema({
   user: {
