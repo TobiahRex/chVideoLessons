@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Schema.Types.ObjectId;
-const CohortLesson = require('../cohortLessons/cohortLesson.model');
-const Chapter = require('../chapters/chapter.model');
-const Section = require('../sections/section.model');
-
+import CohortLesson from '../cohortLessons/cohortLesson.model';
+import Chapter from '../chapters/chapter.model';
+import Section from '../sections/section.model';
+console.log('Section: ', Section);
 
 const lessonSchema = new mongoose.Schema({
   title: { type: String },
@@ -27,48 +27,65 @@ const lessonSchema = new mongoose.Schema({
 9) insert the lesson id into the cohortLesson.
 10) save the cohortLesson.
 */
+// lessonSchema.statics.createNewLesson = (lessonObj, cb) => {
+//   console.log('lessonObj: ', lessonObj);
+//   if (!lessonObj) return cb({ Error: 'Did not provide lesson Obj.' });
+//
+//   CohortLesson.findById(lessonObj.cohortLessonID, (err, dbCL) => {
+//     if (err) return cb({ Error: `Bad Cohort Lesson ID - ${lessonObj.cohortLessonID}` });
+//
+//     Lesson.create({ title: lessonObj.title }, (err2, dbLesson) => {
+//       if (err2) return cb({ Error: `Bad Lesson Obj - ${err2}` });
+//
+//       dbCL.lessons.push(dbLesson._id);
+//       dbCL.save((err3, savedCohortLesson) => {
+//         console.log('savedCohortLesson: ', savedCohortLesson);
+//         if (err3) return cb({ Error: `Could not save Lesson to Cohort Lesson. ${err3}` });
+//
+//         lessonObj.sections.forEach((sectionObj) => {
+//           Section.create({ title: sectionObj.title }, (err4, dbSection) => {
+//             if (err4) return cb({ Error: `Bad Section Obj - ${sectionObj}` });
+//
+//             dbLesson.sections.push(dbSection._id);
+//             dbLesson.save((err5) => {
+//               if (err5) return cb({ Error: `Could not save Section to Lesson. ${err5}` });
+//
+//               sectionObj.chapters.forEach((chapterObj) => {
+//                 Chapter.create(chapterObj, (err6, dbChapter) => {
+//                   if (err6) return cb({ Error: `Bad Chapter Obj - ${chapterObj}` });
+//
+//                   dbSection.chapters.push(dbChapter._id);
+//                   dbSection.save((err7) => {
+//                     if (err7) return cb({ Error: `Could not save Chapter to Section. ${err5}`});
+//                   });
+//                 });
+//               });
+//             });
+//           });
+//         });
+//
+//         return cb(null, savedCohortLesson);
+//
+//       });
+//     });
+//   });
+// };
 lessonSchema.statics.createNewLesson = (lessonObj, cb) => {
-  console.log('lessonObj: ', lessonObj);
-  if (!lessonObj) return cb({ Error: 'Did not provide lesson Obj.' });
-
-  CohortLesson.findById(lessonObj.cohortLessonID, (err, dbCL) => {
-    if (err) return cb({ Error: `Bad Cohort Lesson ID - ${lessonObj.cohortLessonID}` });
-
-    Lesson.create({ title: lessonObj.title }, (err2, dbLesson) => {
-      if (err2) return cb({ Error: `Bad Lesson Obj - ${err2}` });
-
-      dbCL.lessons.push(dbLesson._id);
-      dbCL.save((err3, savedCohortLesson) => {
-        console.log('savedCohortLesson: ', savedCohortLesson);
-        if (err3) return cb({ Error: `Could not save Lesson to Cohort Lesson. ${err3}` });
-
-        lessonObj.sections.forEach((sectionObj) => {
-          Section.create({ title: sectionObj.title }, (err4, dbSection) => {
-            if (err4) return cb({ Error: `Bad Section Obj - ${sectionObj}` });
-
-            dbLesson.sections.push(dbSection._id);
-            dbLesson.save((err5) => {
-              if (err5) return cb({ Error: `Could not save Section to Lesson. ${err5}` });
-
-              sectionObj.chapters.forEach((chapterObj) => {
-                Chapter.create(chapterObj, (err6, dbChapter) => {
-                  if (err6) return cb({ Error: `Bad Chapter Obj - ${chapterObj}` });
-
-                  dbSection.chapters.push(dbChapter._id);
-                  dbSection.save((err7) => {
-                    if (err7) return cb({ Error: `Could not save Chapter to Section. ${err5}`});
-                  });
-                });
-              });
-            });
-          });
-        });
-
-        return cb(null, savedCohortLesson);
-
-      });
-    });
-  });
+  if (!lessonObj) return cb({ error: 'Did not provide lesson Obj' });
+  Lesson.create({ title: lessonObj.title })
+  .then((newLesson) => cb(null, newLesson))
+  .catch((err) => cb(err));
 };
+lessonSchema.statics.addSections = (lessonId, sectionIDs, cb) => {
+  // this route is assuming the sections have already been created.
+  if (!lessonId) return cb({ error: 'Did not provide lesson ID' });
+
+  Lesson.findById(lessonId).exec()
+  .then((dbLesson) => dbLesson.sections.push(sectionIDs).save())
+  .then((savedLesson) => cb(null, savedLesson))
+  .catch((err) => cb(err));
+};
+
 let Lesson = mongoose.model('Lesson', lessonSchema);
-module.exports = Lesson;
+
+export default Lesson;
