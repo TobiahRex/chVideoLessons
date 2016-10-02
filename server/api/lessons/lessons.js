@@ -10,11 +10,11 @@ router.route('/dev')
 .get((req, res) => Lesson.find({}, res.handle));
 
 router.route('/')
-.get((req, res) => Lesson.find({}).populate('Section').exec(res.handle))
+.get((req, res)=> Lesson.find({}).populate('Section').exec(res.handle))
 .post((req, res) => Lesson.create(req.body, res.handle));
 
 router.route('/:id')
-.get((req, res) => Lesson.findById(req.params.id, res.handle))
+.get((req, res) => Lesson.findById(req.params, res.handle))
 .delete((req, res) => Lesson.findByIdAndRemove(req.params.id, res.handle))
 .put((req, res) => Lesson.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true }, res.handle));
 

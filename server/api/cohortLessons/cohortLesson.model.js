@@ -7,4 +7,4 @@ const cohortLessonSchema = new mongoose.Schema({
 });
 
 const CohortLesson = mongoose.model('CohortLesson', cohortLessonSchema);
-module.exports = CohortLesson;
+export default CohortLesson;

@@ -15,10 +15,9 @@ chapterSchema.statics.createAndAddToSection = (reqObj, cb) => {
   Chapter.create(reqObj.chapter)
   .then((dbChapter) => Section.findById(reqObj.sectionId).exec((err, dbSection) => {
     if (err) return cb(err);
-    dbSection.chapters.push(dbChapter).save()
-    .then((savedSection) => cb(null, dbSection))
-    .catch((err) => cb(err));
+    dbSection.chapters.push(dbChapter).save();
   }))
+  .then((savedSection) => cb(null, savedSection))
   .catch((err) => cb(err));
 };
 

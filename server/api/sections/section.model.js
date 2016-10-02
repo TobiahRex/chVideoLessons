@@ -14,9 +14,8 @@ sectionSchema.plugin(deepPopulate);
 sectionSchema.statics.deepRemove = (id, cb) => {
   Section.findById(id)
   .deepPopulate('chapters chapters.comments chapters.comments.replies')
-  .exec((err, dbSection) => {
-    if (err) cb({ Error: `Could not find Section - ${id}` });
-
+  .exec()
+  .then((dbSection) => {
     let chapterIDs = [...dbSection.chapters], commentIDs, replyIDs;
     dbSection.chapters.forEach((chapter) => {
       commentIDs = [...chapter.comments];
@@ -34,8 +33,10 @@ sectionSchema.statics.deepRemove = (id, cb) => {
     Replies.findByIdAndRemove(reply._id, (err) => err ? cb(err) : null));
 
     return cb(null, dbSection);
-  });
+  })
+  .catch((err) => cb(err));
 };
+// this route needs chapter _id's from mongo.
 sectionSchema.statics.addChapters = (sectionId, chapterIDs, cb) => {
   if (!sectionId) return cb({ Error: 'Did not provide seciton Id' });
 

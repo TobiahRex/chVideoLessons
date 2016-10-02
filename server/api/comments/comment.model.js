@@ -62,4 +62,4 @@ commentSchema.downVote = (userId, commentId, cb) => {
   });
 };
 const Comment = mongoose.model('Comment', commentSchema);
-module.exports = Comment;
+export default Comment;
