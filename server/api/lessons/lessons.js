@@ -6,8 +6,7 @@ import CohortLesson from '../cohortLessons/cohortLesson.model';
 TODO: Delete this remove all route before production!
 */
 router.route('/dev')
-.delete((req, res) => Lesson.remove({}, res.handle))
-.get((req, res) => Lesson.find({}, res.handle));
+.delete((req, res) => Lesson.remove({}, res.handle));
 
 router.route('/')
 .get((req, res)=> Lesson.find({}).populate('Section').exec(res.handle))
@@ -15,7 +14,7 @@ router.route('/')
 
 router.route('/:id')
 .get((req, res) => Lesson.findById(req.params, res.handle))
-.delete((req, res) => Lesson.findByIdAndRemove(req.params.id, res.handle))
+.delete((req, res) => Lesson.deepRemove(req.params.id, res.handle))
 .put((req, res) => Lesson.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true }, res.handle));
 
 router.route('/cl/:id')
