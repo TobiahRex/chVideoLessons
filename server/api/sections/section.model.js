@@ -16,24 +16,22 @@ sectionSchema.statics.deepRemove = (id, cb) => {
   .deepPopulate('chapters chapters.comments chapters.comments.replies')
   .exec()
   .then((dbSection) => {
-    let chapterIDs = [...dbSection.chapters], commentIDs, replyIDs;
+    let chapterIDs = [...dbSection.chapters];
+    let commentIDs = [];
+    let replyIDs = [];
     dbSection.chapters.forEach((chapter) => {
       commentIDs = [...chapter.comments];
       chapter.comments.forEach((comment) =>
       replyIDs = [...comment.replies]);
     });
 
-    chapterIDs.forEach((chapter) =>
-    Chapter.findByIdAndRemove(chapter._id, (err) => err ? cb(err) : null));
+    chapterIDs.forEach((chapter) => Chapter.findByIdAndRemove(chapter._id));
+    commentIDs.forEach((comment) => Comment.findByIdAndRemove(comment._id));
+    replyIDs.forEach((reply) => Replies.findByIdAndRemove(reply._id));
 
-    commentIDs.forEach((comment) =>
-    Comment.findByIdAndRemove(comment._id, (err) => err ? cb(err) : null));
-
-    replyIDs.forEach((reply) =>
-    Replies.findByIdAndRemove(reply._id, (err) => err ? cb(err) : null));
-
-    return cb(null, dbSection);
+    Section.findByIdAndRemove(dbSection._id).exec();
   })
+  .then(() => cb(null, { success: 'Section successfully removed.' }))
   .catch((err) => cb(err));
 };
 // this route needs chapter _id's from mongo.
