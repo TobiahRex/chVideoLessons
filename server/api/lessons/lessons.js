@@ -8,7 +8,7 @@ router.route('/dev').delete((req, res) => Lesson.remove({}, res.handle));
 
 
 router.route('/:id')
-.get((req, res) => Lesson.findById(req.params, res.handle))
+.get((req, res) => Lesson.findById(req.params.id, res.handle))
 .delete((req, res) => Lesson.deepRemove(req.params.id, res.handle))
 .put((req, res) => Lesson.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true }, res.handle));
 
