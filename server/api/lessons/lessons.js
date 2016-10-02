@@ -11,7 +11,7 @@ router.route('/dev')
 
 router.route('/')
 .get((req, res) => Lesson.find({}).populate('Section').exec(res.handle))
-.post((req, res) => Lesson.createNewLesson(req.body, res.handle));
+.post((req, res) => Lesson.create(req.body, res.handle));
 
 router.route('/:id')
 .get((req, res) => Lesson.findById(req.params.id, res.handle))

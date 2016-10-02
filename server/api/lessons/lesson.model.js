@@ -70,12 +70,6 @@ const lessonSchema = new mongoose.Schema({
 //     });
 //   });
 // };
-lessonSchema.statics.createNewLesson = (lessonObj, cb) => {
-  if (!lessonObj) return cb({ error: 'Did not provide lesson Obj' });
-  Lesson.create({ title: lessonObj.title })
-  .then((newLesson) => cb(null, newLesson))
-  .catch((err) => cb(err));
-};
 lessonSchema.statics.addSections = (lessonId, sectionIDs, cb) => {
   // this route is assuming the sections have already been created.
   if (!lessonId) return cb({ error: 'Did not provide lesson ID' });
