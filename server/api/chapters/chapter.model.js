@@ -4,11 +4,11 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const chapterSchema = new mongoose.Schema({
   title: { type: String },
-  comments: [{ type: ObjectId, ref: 'User' }],
+  comments: [{ type: ObjectId, ref: 'Comment' }],
   video: {
     url: { type: String },
     duration: { type: Number }
   }
 });
 const Chapter = mongoose.model('Chapter', chapterSchema);
-module.exports = Chapter;
+export default Chapter;
