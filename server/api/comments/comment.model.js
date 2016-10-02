@@ -37,28 +37,24 @@ commentSchema.postComment = (chapterId, comment, cb) => {
     });
   });
 };
-commentSchema.upVote = (userId, commentId, cb) => {
-  if (!userId || !commentId) return cb({ Error: 'Did not provide User Id for Upvote' });
-  User.findById(userId, (err1, dbUser) => {
-    Comment.findById(commentId, (err2, dbComment) => {
-      if (err1) return cb({ Error: `Could not find that User: ${userId}` });
-      if (err2) return cb({ Error: `Could not find that Comment: ${commentId}` });
 
-      dbComment.upvotes.push(dbUser._id);
-      dbComment.save((err3, savedComment) => cb(err3 || null, savedComment));
-    });
+commentSchema.upVote = (commentId, userId, cb) => {
+  if (!userId || !commentId) return cb({ Error: 'Did not provide User Id for Upvote' });
+  Comment.findById(commentId, (err2, dbComment) => {
+    if (err2) return cb({ Error: `Could not find that Comment: ${commentId}` });
+
+    dbComment.upvotes.push(userId._id);
+    dbComment.save((err3, savedComment) => cb(err3 || null, savedComment));
   });
 };
-commentSchema.downVote = (userId, commentId, cb) => {
-  if (!userId || !commentId) return cb({ Error: 'Did not provide User Id for Downvote' });
-  User.findById(userId, (err1, dbUser) => {
-    Comment.findById(commentId, (err2, dbComment) => {
-      if (err1) return cb({ Error: `Could not find that user: ${userId}` });
-      if (err2) return cb({ Error: `Could not find that reply: ${commentId}` });
 
-      dbComment.downvotes.push(dbUser._id);
-      dbComment.save((err3, savedComment) => cb(err3 || null, savedComment));
-    });
+commentSchema.downVote = (commentId, userId, cb) => {
+  if (!userId || !commentId) return cb({ Error: 'Did not provide User Id for Downvote' });
+  Comment.findById(commentId, (err2, dbComment) => {
+    if (err2) return cb({ Error: `Could not find that reply: ${commentId}` });
+
+    dbComment.downvotes.push(userId._id);
+    dbComment.save((err3, savedComment) => cb(err3 || null, savedComment));
   });
 };
 const Comment = mongoose.model('Comment', commentSchema);

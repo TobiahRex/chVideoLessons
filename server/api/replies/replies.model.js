@@ -23,41 +23,34 @@ let replySchema = new mongoose.Schema({
   }]
 });
 
-replySchema.addReply = (commentId, reply, cb) => {
-  if (!commentId) return cb({ Error: 'Did not provide Comment ID for Reply.' });
-  Reply.create(reply, (err1, dbReply) => {
-    Comment.findById(commentId, (err2, dbComment) => {
-      if (err1) return cb({ Error: `Error making Reply: ${err1}` });
-      if (err2) return cb({ Error: `Could not find Comment with ID: ${commentId}` });
-
-      dbComment.replies.push(dbReply._id);
-      dbComment.save((err3, savedComment) => cb(err3 || null, savedComment));
-    });
-  });
+replySchema.addReply = (commentId, replyObj, cb) => {
+  if (!commentId) return cb({ Error: 'Missing ID(s).' });
+  let dbComment1 = {};
+  Comment.findById(commentId).exec().then((dbComment2) => {
+    dbComment1 = dbComment2;
+    Reply.create(replyObj);
+  })
+  .then((dbReply) => dbComment1.replies.push(dbReply._id).save())
+  .then((savedComment) => cb(null, savedComment))
+  .catch((err) => cb(err));
 };
-replySchema.upVote = (userId, replyId, cb) => {
-  if (!userId || !replyId) return cb({ Error: 'Did not provide User Id for Upvote' });
-  User.findById(userId, (err1, dbUser) => {
-    Reply.findById(replyId, (err2, dbReply) => {
-      if (err1) return cb({ Error: `Could not find that user: ${userId}` });
-      if (err2) return cb({ Error: `Could not find that reply: ${replyId}` });
 
-      dbReply.upvotes.push(dbUser._id);
-      dbReply.save((err3, savedReply) => cb(err3 || null, savedReply));
-    });
-  });
+replySchema.upVote = (replyId, userId, cb) => {
+  if (!userId || !replyId) return cb({ Error: 'Missing ID(s).' });
+
+  Reply.findById(replyId).exec()
+  .then((dbReply) => dbReply.upvotes.push(userId).save())
+  .then((savedReply) => cb(null, savedReply))
+  .catch((err) => cb(err));
 };
-replySchema.downVote = (userId, replyId, cb) => {
-  if (!userId || !replyId) return cb({ Error: 'Did not provide User Id for Downvote' });
-  User.findById(userId, (err1, dbUser) => {
-    Reply.findById(replyId, (err2, dbReply) => {
-      if (err1) return cb({ Error: `Could not find that user: ${userId}` });
-      if (err2) return cb({ Error: `Could not find that reply: ${replyId}` });
 
-      dbReply.downvotes.push(dbUser._id);
-      dbReply.save((err3, savedReply) => cb(err3 || null, savedReply));
-    });
-  });
+replySchema.downVote = (replyId, userId, cb) => {
+  if (!userId || !replyId) return cb({ Error: 'Missing ID(s)' });
+
+  Reply.findById(replyId).exec()
+  .then((dbReply) => dbReply.downvotes.push(userId._id).save())
+  .then((savedReply) => cb(null, savedReply))
+  .catch((err) => cb(err));
 };
 const Reply = mongoose.model('Reply', replySchema);
 export default Reply;
