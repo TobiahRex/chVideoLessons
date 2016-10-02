@@ -5,6 +5,7 @@ import Chapter from '../chapters/chapter.model';
 import Section from '../sections/section.model';
 import Comment from '../comments/comment.model';
 import Replies from '../replies/replies.model';
+import deepPopulate from 'mongoose-deep-populate';
 
 const lessonSchema = new mongoose.Schema({
   title: { type: String },
@@ -15,6 +16,7 @@ const lessonSchema = new mongoose.Schema({
     default: Date.now
   }
 });
+lessonSchema.plugin(deepPopulate);
 /*
 1) find a cohort lesson that should already exist.
 2) create a new lesson
@@ -89,7 +91,10 @@ lessonSchema.statics.deepRemove = (lessonId, cb) => {
   .deepPopulate('sections section.chapters sections.chapters.comments sections.chapters.comments.replies')
   .exec()
   .then((dbLesson) => {
-    let sections = [], chapters, comments, replies;
+    let sections = [];
+    let chapters = [];
+    let comments = [];
+    let replies = [];
     sections = [...dbLesson.sections];
     dbLesson.sections.forEach((section) => {
       chapters = [...section.chapters];
@@ -105,7 +110,10 @@ lessonSchema.statics.deepRemove = (lessonId, cb) => {
     chapters.forEach((chapter) => Chapter.findByIdAndRemove(chapter._id));
     comments.forEach((comment) => Comment.findByIdAndRemove(comment._id));
     replies.forEach((reply) => Replies.findByIdAndRemove(reply._id));
+
+    Lesson.findByIdAndRemove(dbLesson._id).exec();
   })
+  .then(() => cb(null, { success: 'Lesson was successfully removed.' }))
   .catch((err) => cb(err));
 };
 let Lesson = mongoose.model('Lesson', lessonSchema);
