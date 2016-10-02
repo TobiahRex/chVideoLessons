@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-const Comment = require('../comments/comment.model');
+import Section from '../sections/section.model';
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const chapterSchema = new mongoose.Schema({
@@ -10,6 +10,18 @@ const chapterSchema = new mongoose.Schema({
     duration: { type: Number }
   }
 });
+chapterSchema.statics.createAndAddToSection = (reqObj, cb) => {
+  if (!reqObj) return cb({ Error: 'Did not provide chapter Obj' });
+  Chapter.create(reqObj.chapter)
+  .then((dbChapter) => Section.findById(reqObj.sectionId).exec((err, dbSection) => {
+    if (err) return cb(err);
+    dbSection.chapters.push(dbChapter).save()
+    .then((savedSection) => cb(null, dbSection))
+    .catch((err) => cb(err));
+  }))
+  .catch((err) => cb(err));
+};
+
 // this route assumed that you have already created each Comment.
 chapterSchema.statics.addComments = (chapterId, commentIDs, cb) => {
   if (!chapterId) return cb({ Error: 'Did not provide chapter Id.' });
