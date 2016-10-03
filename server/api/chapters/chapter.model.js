@@ -10,18 +10,23 @@ const chapterSchema = new mongoose.Schema({
     duration: { type: Number }
   }
 });
-chapterSchema.statics.createAndAddToSection = (reqObj, cb) => {
-  if (!reqObj) return cb({ Error: 'Did not provide chapter Obj' });
-  Chapter.create(reqObj.chapter)
-  .then((dbChapter) => Section.findById(reqObj.sectionId).exec((err, dbSection) => {
-    if (err) return cb(err);
-    dbSection.chapters.push(dbChapter).save();
-  }))
+chapterSchema.statics.createAndAddToSection = (chapterObj, sectionId, cb) => {
+  if (!chapterObj || !sectionId) return cb({ Error: 'Missing input(s) @ create Chapter' });
+  let dbSection1 = {};
+  Section.findById(sectionId).exec()
+  .then((dbSection) => {
+    dbSection1 = dbSection;
+    Chapter.create(chapterObj);
+  })
+  .then((dbChapter) => dbSection1.chapters.push(dbChapter).save())
   .then((savedSection) => cb(null, savedSection))
   .catch((err) => cb(err));
 };
 
-// this route assumed that you have already created each Comment.
+/*
+  This route adds an array of chapter mongo ID's to a chapter.
+  The chapter ID's should be added to an array in the FE.
+*/
 chapterSchema.statics.addComments = (chapterId, commentIDs, cb) => {
   if (!chapterId) return cb({ Error: 'Did not provide chapter Id.' });
 

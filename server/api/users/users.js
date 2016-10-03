@@ -5,7 +5,7 @@ const User = require('./user.model');
 const auth = require('../../auth/auth.middlewares');
 
 // router.route('/')
-// .get((req, res) => User.obtainUsers(res.handle))
+// .get((req, res) => User.find({}, res.handle))
 // .post((req, res) => User.registerNewUser(req.body, res.handle))
 // .put((req, res) => User.updateUserAccount(req.body, res.handle));
 //
@@ -13,12 +13,7 @@ const auth = require('../../auth/auth.middlewares');
 //   let activeUser = req.user;
 //   res.send(activeUser);
 // });
-// router.delete('/deleteUser/:userId',(req, res) =>  {
-//   User.deleteUserAccount(req.params.userId,(error) =>  {
-//     if (error) res.status(400).send(error);
-//     res.send('The user has been deleted');
-//   });
-// });
+// router.delete('/deleteUser/:userId', (req, res) => User.findByIdAndRemove(req.params.userId, res.handle));
 
 router.route('/')
 .get((req, res) => {

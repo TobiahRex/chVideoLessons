@@ -34,14 +34,19 @@ sectionSchema.statics.deepRemove = (id, cb) => {
   .then(() => cb(null, { success: 'Section successfully removed.' }))
   .catch((err) => cb(err));
 };
-// this route needs chapter _id's from mongo.
+
+/*
+  This route takes an array of Chapter Mongo Id's.
+  The Id's should be added to an array in the FE.
+*/
 sectionSchema.statics.addChapters = (sectionId, chapterIDs, cb) => {
-  if (!sectionId) return cb({ Error: 'Did not provide seciton Id' });
+  if (!sectionId || !chapterIDs) return cb({ Error: 'Missing ID(s) @ addChapters' });
 
   Section.findById(sectionId).exec()
   .then((dbSection) => dbSection.chapters.push(chapterIDs).save())
   .then((savedSection) => cb(null, savedSection))
   .catch((err) => cb(err));
 };
+
 const Section = mongoose.model('Section', sectionSchema);
 export default Section;

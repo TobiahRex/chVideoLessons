@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
-const Comment = require('../comments/comment.model');
-const User = require('../users/user.model');
 const ObjectId = mongoose.Schema.Types.ObjectId;
+import Comment from '../comments/comment.model';
 
 let replySchema = new mongoose.Schema({
   user: {
@@ -27,8 +26,8 @@ replySchema.statics.addReply = (commentId, replyObj, cb) => {
   if (!commentId) return cb({ Error: 'Missing ID(s).' });
   let dbComment1 = {};
   Comment.findById(commentId).exec()
-  .then((dbComment2) => {
-    dbComment1 = dbComment2;
+  .then((dbComment) => {
+    dbComment1 = dbComment;
     Reply.create(replyObj);
   })
   .then((dbReply) => dbComment1.replies.push(dbReply._id).save())
@@ -38,7 +37,6 @@ replySchema.statics.addReply = (commentId, replyObj, cb) => {
 
 replySchema.statics.upVote = (replyId, userId, cb) => {
   if (!userId || !replyId) return cb({ Error: 'Missing ID(s).' });
-
   Reply.findById(replyId).exec()
   .then((dbReply) => dbReply.upvotes.push(userId).save())
   .then((savedReply) => cb(null, savedReply))
@@ -47,7 +45,6 @@ replySchema.statics.upVote = (replyId, userId, cb) => {
 
 replySchema.statics.downVote = (replyId, userId, cb) => {
   if (!userId || !replyId) return cb({ Error: 'Missing ID(s)' });
-
   Reply.findById(replyId).exec()
   .then((dbReply) => dbReply.downvotes.push(userId._id).save())
   .then((savedReply) => cb(null, savedReply))

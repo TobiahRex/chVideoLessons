@@ -13,6 +13,7 @@ router.route('/')
   };
   request.post(options, (err, data, body) => {
     if (!body.token) return res.status(400).send({ Error: 'User not found' });
+
     JWT.verify(body.token, config.secrets.test, (err, payload) => {
       if (err) return res.status(401).send({ Error: 'HACKER! You are not authorized.' });
       req.user = payload;

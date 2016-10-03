@@ -40,7 +40,6 @@ commentSchema.statics.postComment = (chapterId, comment, cb) => {
 
 commentSchema.statics.upVote = (commentId, userId, cb) => {
   if (!userId || !commentId) return cb({ Error: 'Missing ID(s) @ upVote' });
-
   Comment.findById(commentId).exec()
   .then((dbComment) => dbComment.upvotes.push(userId._id).save())
   .then((savedComment) => cb(null, savedComment))

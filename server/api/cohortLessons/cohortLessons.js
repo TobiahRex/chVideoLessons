@@ -3,7 +3,6 @@ const router = express.Router();
 import CohortLesson from './cohortLesson.model';
 
 // TODO: Remove these /dev routes in Production.
-
 router.route('/dev')
 .delete((req, res) => CohortLesson.remove({}, res.handle))
 .post((req, res) => CohortLesson.create(req.body, res.handle))
