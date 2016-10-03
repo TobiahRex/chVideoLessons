@@ -10,6 +10,4 @@ router.post('/add/:commentId', (req, res) => Reply.addReply(req.params.commentId
 router.post('/:replyId/upvote/:userId', (req, res) => Reply.upVote(req.params.replyId, req.params.userId, res.handle));
 router.post('/:replyId/downvote/:userId', (req, res) => Reply.downVote(req.params.replyId, req.params.userId, res.handle));
 
-router.
-
 module.exports = router;
