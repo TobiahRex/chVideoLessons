@@ -1,4 +1,5 @@
 // See 'stores/' README.md for answers to any questions here.
+// NOTE - Reverse lines 13 & 16 if the store isn't getting updated.
 
 import R from 'ramda';
 import Immutable from 'seamless-immutable';
@@ -15,7 +16,3 @@ export default {
     return fromImmutable(state);
   }
 };
-
-/*
-  NOTE - Reverse lines 15 & 12 if the store isn't getting updated.
-*/

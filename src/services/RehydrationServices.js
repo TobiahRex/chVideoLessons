@@ -1,23 +1,26 @@
-import ReduxPersist from '../config/ReduxPersist';
-import localForage from 'localforage';
+import ReduxPersist from '../Config/ReduxPersist';
+import LocalForage from 'localforage';
 import { persistStore } from 'redux-persist';
+import StartupActions from '../Redux/StartupRedux';
 
 const updateReducers = (store) => {
   const reducerVersion = ReduxPersist.reducerVersion;
   const config = ReduxPersist.storeConfig;
+  const startup = () => store.dispatch(StartupActions.startup());
 
-  persistStore(store, config, () => {
-    console.info('Rehydration Completed!', store.getStore());
-    const { dispatch } = store;
-    dispatch(Actions.start());
+  LocalForage.getItem('reducerVersion')
+  .then((localVersion) => {
+    if (localVersion !== reducerVersion) {
+      persistStore(store, config, startup).purge();
+      LocalForage.setItem('reducerVersion', reducerVersion);
+    } else {
+      persistStore(store, config, startup);
+    }
+  })
+  .catch(() => {
+    persistStore(store, config, startup);
+    LocalForage.setItem('reducerVersion', reducerVersion);
   });
 };
 
-
-
-/*
-  TODO:
-  Continue building Rehydration Services
-  Need to create Action Creator for Startup.
-  Add STARTUP to Types.js
-*/
+export default updateReducers;

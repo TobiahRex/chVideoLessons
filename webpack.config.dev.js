@@ -10,7 +10,7 @@ export default {
   entry: [
     'eventsource-polyfill', // necessary for hot reloading with IE
     'webpack-hot-middleware/client?reload=true', //note that it reloads the page if hot module reloading fails.
-    './src/index'
+    './src/Containers/App'
   ],
   //can be set to node
   // setting it should be bundled so the web can understand
@@ -20,12 +20,13 @@ export default {
   output: {
     //but path and name need to be inputted
     //no files won't be written
-    path: __dirname + '/dist', // Note: Physical files are only output by the production build task `npm run build`.
+    path: __dirname + '/build', // Note: Physical files are only output by the production build task `npm run build`.
     publicPath: '/',
     filename: 'bundle.js'
   },
   //tell webpack's dev server where the code is
   devServer: {
+    noInfo: true,
     contentBase: './src',
     inline: true,
     historyApiFallback: true,

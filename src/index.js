@@ -5,7 +5,7 @@ import configureStore from "./store/configureStore.dev";
 import {Provider} from "react-redux";
 import { Router, applyRouterMiddleware, browserHistory } from "react-router";
 import useScroll from "react-router-scroll";
-import {generateRoutes} from "./routes";
+import { generateRoutes } from "./Navigation/routes";
 import "./styles/styles.css";
 import "../node_modules/react-bootstrap/dist/react-bootstrap.min";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";

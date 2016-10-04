@@ -15,10 +15,10 @@ const auth = require('../../auth/auth.middlewares');
 // });
 // router.delete('/deleteUser/:userId', (req, res) => User.findByIdAndRemove(req.params.userId, res.handle));
 
-router.route('/')
-.get((req, res) => {
-  request.get('http://test.codinghouse.co/api/users/me', (err, response, body) => {
-    return res.status(err ? 400 : 200).send(err || body);
+router.route('/cohorts')
+.get(auth.isAuthenticated(), (req, res, next) => {
+  request.get(`http://test.codinghouse.co/api/cohorts/`, (err, response, body) => {
+    return res.status(err ? 400 : 200).send(err || JSON.parse(body));
   }).auth(null, null, true, req.headers.authorization.split(' ')[1]);
 });
 
@@ -29,9 +29,9 @@ router.route('/:id')
   }).auth(null, null, true, req.headers.authorization.split(' ')[1]);
 });
 
-router.route('/cohorts/')
-.get(auth.isAuthenticated(), (req, res, next) => {
-  request.get(`http://test.codinghouse.co/api/cohorts/`, (err, response, body) => {
+router.route('/')
+.get((req, res) => {
+  request.get('http://test.codinghouse.co/api/users/me', (err, response, body) => {
     return res.status(err ? 400 : 200).send(err || body);
   }).auth(null, null, true, req.headers.authorization.split(' ')[1]);
 });

@@ -1,18 +1,17 @@
 import React from "react";
 import { Route, IndexRedirect } from "react-router";
-import App from "./components/App";
-import HomePage from "./components/Home/HomePage";
-import * as types from "./actions/Types";
+import App from "../Containers/App";
+import HomePage from "../Containers/Home/HomePage";
 import toastr from "toastr";
 
-export const generateRoutes = (store) => {
+const generateRoutes = (store) => {
   const checkIfActiveUser = (nextState, replace) => {
     let activeUser;
     if (store) {
       activeUser = store.getState().userAndAuth;
     }
     if (!activeUser) {
-      replace({pathname: "/"});
+      replace({ pathname: "/" });
       if(!localStorage.profile) {
         toastr.info("Please login for access.");
       }
@@ -28,3 +27,5 @@ export const generateRoutes = (store) => {
   );
 
 };
+
+export default generateRoutes;

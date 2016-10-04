@@ -1,14 +1,13 @@
-import ImmutablePersistenceTransform from './ImmutablePersistenceTransform';
-import { persistentStoreBlacklist as blacklist, persistentStoreWhiteList as whitelist } from '../reducers/';
-import localForage from 'localforage';
+import ImmutablePersistenceTransform from '../Services/ImmutablePersistenceTransform';
+import LocalForage from 'localforage';
 
 const REDUX_PERSIST = {
   active: true,
-  reducerVersion: '1',
+  reducerVersion: '2',
   storeConfig: {
-    blacklist,
-    whitelist,
-    storage: localForage,
+    storage: LocalForage,
+    blacklist: ['login'],
+    whitelist: [],
     transforms: [ImmutablePersistenceTransform]
   }
 };
