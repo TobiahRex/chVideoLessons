@@ -22,17 +22,13 @@ export default (rootReducer, rootSaga) => {
       predicate: (getState, { type }) => USE_LOGGING && R.not(R.contains(type, SAGA_LOGGING_BLACKLIST))
     });
     middlewares.push(logger);
+
+    enhancers.push( typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ?
+      window.devToolsExtension() : f => f
+    );
   }
   enhancers.push(applyMiddleware(...middlewares));
 
-  if(_DEV_){
-    const createReactotronEnhancer = require('reactotron-redux');
-    const reactotronEnhancer = createReactotronEnhancer(console.tron, {
-      isActionImportant: (action) => action.Type === StartupType.STARTUP,
-      ignore: [...SAGA_LOGGING_BLACKLIST]
-    });
-    enhancers.push(reactotronEnhancer);
-  }
   if(ReduxPersist.active) {
     enhancers.push(autoRehydrate());
   }
