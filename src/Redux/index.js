@@ -1,10 +1,11 @@
-import { combineReducers } from "redux";
-import initialStateReducer from "./initialStateReducer";
-import requestStatusReducer from "./requestsInProgress";
+import { combineReducers } from 'redux';
+import configureStore from './CreateStore';
+import rootSaga from '../Sagas/index';
 
-const rootReducer = combineReducers({
-  initialState: initialStateReducer,
-  requestsInProgress: requestStatusReducer
-});
+export default () => {
+  const rootReducer = combineReducers({
+    login: require('./LoginRedux').reducer
+  });
 
-export default rootReducer;
+  return configureStore(rootReducer, rootSaga);
+};
